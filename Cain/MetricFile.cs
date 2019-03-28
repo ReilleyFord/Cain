@@ -57,6 +57,7 @@ namespace Cain
 
                 this._metrics.Add(newMetric);
             }
+            this._id = GetCurrentId();
         }
 
         public List<Metric> GetMetrics() {
@@ -86,6 +87,7 @@ namespace Cain
             string newJsonResult = Newtonsoft.Json.JsonConvert.SerializeObject(this._JSON,
                                Newtonsoft.Json.Formatting.Indented);
             File.WriteAllText(this._path, newJsonResult);
+            loadMetrics();
         }
 
         public void CreateMetric(Metric metric) {
