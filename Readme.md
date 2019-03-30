@@ -9,5 +9,5 @@ Requirements:
 - `Open XML SDK` version `2.5`
 
 
-This is a library being built for `Deckard` front end. Cain allows for Docx conversion and parsing, 
+This is a library being built for `Deckard` WPF front end. Cain allows for Docx conversion and parsing, 
 Metric storage and logic for said parsing and auditing logic.
