@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Cain
@@ -24,29 +25,32 @@ namespace Cain
             else
                 CreateMetricsFile(path);
 
-            this._JSON = JObject.Parse(this._file);
             this._id = GetCurrentId();
-            loadMetrics();
-
+            LoadMetrics();
         }
 
         private void CreateMetricsFile(string path) {
-            if (!File.Exists(path))
-                File.Create(path);
+            this._id = 0;
+
+            JArray metrics = new JArray();
+            JObject obj = new JObject();
+            obj["Metrics"] = metrics;
+
+            File.WriteAllText(this._path, JsonConvert.SerializeObject(obj));
+            LoadMetricsFile(path);
         }
 
         private void LoadMetricsFile(string path) {
             try {
                 this._file = File.ReadAllText(path);
-            } catch(IOException) {
-                throw;
-            }
+                this._JSON = JObject.Parse(this._file);
+            } catch (IOException) { throw; }
 
         }
 
-        private void loadMetrics() { 
-            foreach(JToken metric in this._JSON
-                .GetValue("Metrics")) {
+        private void LoadMetrics() { 
+            
+            foreach(JToken metric in this._JSON.GetValue("Metrics")) {
                 Metric newMetric = new Metric();
                 newMetric.Id = (int)metric["id"];
                 newMetric.Name = (string) metric["Name"];
@@ -63,45 +67,52 @@ namespace Cain
         }
 
         public int GetCurrentId() {
-            JArray metrics = (JArray)this._JSON["Metrics"];
-            JToken lastMetric = metrics.Last;
+            if (this._id == 0)
+                return this._id;
+            else {
+                JArray metrics = (JArray)this._JSON["Metrics"];
+                JToken lastMetric = metrics.Last;
 
-            int id = (int)lastMetric["id"];
+                int id = (int)lastMetric["id"];
 
-            return id;
+                return id;
+            }
         }
 
         public void CreateMetric(string name, string startingValue, string endingValue) {
-            Metric metric = new Metric(this._id, name, startingValue, endingValue);
+            this._id++;
+            Metric metric = new Metric(name, startingValue, endingValue);
+            metric.Id = this._id;
 
             JArray metrics = (JArray)this._JSON["Metrics"];
             JObject jObj = new JObject(
-                new JProperty("id", this._id++),
+                new JProperty("id", this._id),
                 new JProperty("Name", metric.Name),
                 new JProperty("Start Value", metric.StartingValue),
                 new JProperty("End Value", metric.EndingValue)
                 );
             metrics.Add(jObj);
-            string newJsonResult = Newtonsoft.Json.JsonConvert.SerializeObject(this._JSON,
-                               Newtonsoft.Json.Formatting.Indented);
+            string newJsonResult = JsonConvert.SerializeObject(this._JSON,
+                               Formatting.Indented);
             File.WriteAllText(this._path, newJsonResult);
-            loadMetrics();
+            LoadMetrics();
         }
 
         public void CreateMetric(Metric metric) {
-            JArray metrics = (JArray) this._JSON["Metrics"];
+            this._id++;
+            JArray metrics = (JArray)this._JSON["Metrics"];
             JObject jObj = new JObject(
-                new JProperty("id", this._id++),
+                new JProperty("id", this._id),
                 new JProperty("Name", metric.Name),
                 new JProperty("Start Value", metric.StartingValue),
                 new JProperty("End Value", metric.EndingValue)
                 );
             metrics.Add(jObj);
-            string newJsonResult = Newtonsoft.Json.JsonConvert.SerializeObject(this._JSON,
-                               Newtonsoft.Json.Formatting.Indented);
+            string newJsonResult = JsonConvert.SerializeObject(this._JSON,
+                               Formatting.Indented);
             File.WriteAllText(this._path, newJsonResult);
 
-            loadMetrics();
+            LoadMetrics();
         }
 
         public Metric GetMetric(int id) {
@@ -143,10 +154,10 @@ namespace Cain
             }
 
             oldMetric.Replace(newMetric);
-            string newJsonResult = Newtonsoft.Json.JsonConvert.SerializeObject(this._JSON,
-                   Newtonsoft.Json.Formatting.Indented);
+            string newJsonResult = JsonConvert.SerializeObject(this._JSON,
+                   Formatting.Indented);
             File.WriteAllText(this._path, newJsonResult);
-            loadMetrics();
+            LoadMetrics();
         }
 
         public void DeleteMetric(int id) {
@@ -157,7 +168,7 @@ namespace Cain
                 foreach (JObject m in metrics) {
                     if ((int)m["id"] == id)
                         oldMetric = m;
-                    else
+                                        else
                         throw new System.ArgumentOutOfRangeException("Error: That ID was not found");
                 }
             } catch (System.ArgumentOutOfRangeException e) {
@@ -165,10 +176,10 @@ namespace Cain
             }
 
             metrics.Remove(oldMetric);
-            string newJsonResult = Newtonsoft.Json.JsonConvert.SerializeObject(this._JSON,
-                   Newtonsoft.Json.Formatting.Indented);
+            string newJsonResult = JsonConvert.SerializeObject(this._JSON,
+                   Formatting.Indented);
             File.WriteAllText(this._path, newJsonResult);
-            loadMetrics();
+            LoadMetrics();
         }
     }
 }

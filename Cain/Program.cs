@@ -9,23 +9,23 @@ namespace Cain {
 
         static void Main() {
             string path = @"C:\Users\Reilley\Desktop\Work Development\Exemplars\EX10123456 R v. BOMBADIL\EX10123456 Case Notes FORD.docx";
-            string JSON = "test.json";
+            string JSON = "New.json";
 
 
             MetricFile metricFile = new MetricFile(JSON);
 
-            //Metric metric = new Metric(3, "Hash", "Began Hashing", "Hashing Complete");
-            //metricFile.CreateMetric(metric);
-            CainLibrary cain = new CainLibrary();
+            Metric metric = new Metric("Hash", "Began Hashing", "Hashing Complete");
+            metricFile.CreateMetric(metric);
+            //CainLibrary cain = new CainLibrary();
 
             //cain.ConvertDocxToENTable(path);
-            //metricFile.CreateMetric("Test four", "STart test four", "End test four");
+            metricFile.CreateMetric("Test four", "STart test four", "End test four");
 
-            List<Metric> metrics = metricFile.GetMetrics();
+            //List<Metric> metrics = metricFile.GetMetrics();
 
 
             //metricFile.UpdateMetric(5, "Test Five", "Start Test Five", "End Test Five");
-            Metric metric = metricFile.GetMetric(8);
+            //Metric metric = metricFile.GetMetric(8);
             //Console.WriteLine("GetMetric: " + metric.Name);
 
             //metricFile.DeleteMetric(5);

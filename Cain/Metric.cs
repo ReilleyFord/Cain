@@ -15,8 +15,7 @@ namespace Cain
 
         }
 
-        public Metric(int id, string name, string start, string end) {
-            this.Id = id;
+        public Metric(string name, string start, string end) {
             this.Name = name;
             this.StartingValue = start;
             this.EndingValue = end;
