@@ -158,9 +158,7 @@ namespace Cain
                     else
                         throw new System.ArgumentOutOfRangeException("Error: That ID was not found");
                 }
-            } catch (System.ArgumentOutOfRangeException e) {
-                Console.WriteLine(e.Message);
-            }
+            } catch (System.ArgumentOutOfRangeException e) { Console.WriteLine(e.Message); }
 
             metrics.Remove(oldMetric);
             string newJson = JsonConvert.SerializeObject(this._JSON,

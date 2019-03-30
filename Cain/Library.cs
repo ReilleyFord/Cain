@@ -6,8 +6,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 
 
-namespace Cain
-{
+namespace Cain {
     public class CainLibrary {
 
         public void ConvertDocxToENTable(string @path) {
@@ -26,26 +25,26 @@ namespace Cain
                 Table table = main.Document.Body.Elements<Table>().First();
 
                 string date = "";
-                foreach(var row in table) {
-                    Console.WriteLine("Row");
-                    ENTableRow enTableRow = new ENTableRow();
-                    string entryNum = row.FirstChild.InnerText;
-                    if (entryNum.Trim().Length > 4)
+                foreach(TableRow row in table.Elements<TableRow>()) {
+                    ENTableRow newRow = new ENTableRow();
+                    string entryNum = row.ElementAt(0).InnerText;
+                    if (entryNum.Trim().Length > 3) {
                         date = entryNum.Substring(0, 9);
-                    else
-                        enTableRow.entryNumber = entryNum;
+                        newRow.entryNumber = entryNum.Substring(entryNum.Length - 3);
+                    } else
+                        newRow.entryNumber = entryNum;
 
-                    string time = row.ElementAt(1).InnerText;
-                    Console.WriteLine(time);
-                    enTableRow.entryDateTime = DateTime.ParseExact(date + time, "DDMMyyyy", null);
-                    Console.WriteLine(date+"\n"+entryNum + "\n" + time);
-                    enTableRow.entryContent = row.ElementAt(2).InnerText;
+                    string timeStamp = row.ElementAt(1).InnerText;
+                    if (timeStamp != "") {
+                        string dateTime = date + " " + timeStamp.Insert(2, ":");
+                        newRow.entryDateTime = Convert.ToDateTime(dateTime.Trim());
+                    } else
+                        newRow.entryDateTime = null;
 
-                    enTable.Rows.Add(enTableRow);
+                    newRow.entryContent = row.ElementAt(2).InnerText;
+
+                    enTable.Rows.Add(newRow);
                 }
-
-                Console.WriteLine();
-
             }
 
             
