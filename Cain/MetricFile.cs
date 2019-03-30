@@ -49,7 +49,6 @@ namespace Cain
         }
 
         private void LoadMetrics() { 
-            
             foreach(JToken metric in this._JSON.GetValue("Metrics")) {
                 Metric newMetric = new Metric();
                 newMetric.Id = (int)metric["id"];
@@ -156,7 +155,7 @@ namespace Cain
                 foreach (JObject m in metrics) {
                     if ((int)m["id"] == id)
                         oldMetric = m;
-                                        else
+                    else
                         throw new System.ArgumentOutOfRangeException("Error: That ID was not found");
                 }
             } catch (System.ArgumentOutOfRangeException e) {
