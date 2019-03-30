@@ -62,8 +62,14 @@ namespace Cain
             this._id = GetCurrentId();
         }
 
-        public List<Metric> GetMetrics() {
-            return this._metrics;
+        private JObject BuildJObject(Metric metric) {
+            JObject jObj = new JObject(
+                new JProperty("id", this._id),
+                new JProperty("Name", metric.Name),
+                new JProperty("Start Value", metric.StartingValue),
+                new JProperty("End Value", metric.EndingValue)
+                );
+            return jObj;
         }
 
         public int GetCurrentId() {
@@ -85,32 +91,22 @@ namespace Cain
             metric.Id = this._id;
 
             JArray metrics = (JArray)this._JSON["Metrics"];
-            JObject jObj = new JObject(
-                new JProperty("id", this._id),
-                new JProperty("Name", metric.Name),
-                new JProperty("Start Value", metric.StartingValue),
-                new JProperty("End Value", metric.EndingValue)
-                );
-            metrics.Add(jObj);
-            string newJsonResult = JsonConvert.SerializeObject(this._JSON,
+            JObject newMetric = BuildJObject(metric);
+            metrics.Add(newMetric);
+            string newJson = JsonConvert.SerializeObject(this._JSON,
                                Formatting.Indented);
-            File.WriteAllText(this._path, newJsonResult);
+            File.WriteAllText(this._path, newJson);
             LoadMetrics();
         }
 
         public void CreateMetric(Metric metric) {
             this._id++;
             JArray metrics = (JArray)this._JSON["Metrics"];
-            JObject jObj = new JObject(
-                new JProperty("id", this._id),
-                new JProperty("Name", metric.Name),
-                new JProperty("Start Value", metric.StartingValue),
-                new JProperty("End Value", metric.EndingValue)
-                );
-            metrics.Add(jObj);
-            string newJsonResult = JsonConvert.SerializeObject(this._JSON,
+            JObject newMetric = BuildJObject(metric);
+            metrics.Add(newMetric);
+            string newJson = JsonConvert.SerializeObject(this._JSON,
                                Formatting.Indented);
-            File.WriteAllText(this._path, newJsonResult);
+            File.WriteAllText(this._path, newJson);
 
             LoadMetrics();
         }
@@ -125,9 +121,7 @@ namespace Cain
                     else
                         throw new System.ArgumentOutOfRangeException("Error: That ID was not found");
                 }
-            } catch (System.ArgumentOutOfRangeException e) {
-                Console.WriteLine(e.Message);
-            }
+            } catch (System.ArgumentOutOfRangeException e) { Console.WriteLine(e.Message); }
 
             return metric;
         }
@@ -135,13 +129,9 @@ namespace Cain
         public void UpdateMetric(int id, string name, string startingValue, string endingValue) {
             JArray metrics = (JArray)this._JSON["Metrics"];
             JObject oldMetric = new JObject();
+            Metric metric = new Metric(name, startingValue, endingValue);
 
-            JObject newMetric = new JObject(
-                new JProperty("id", this._id++),
-                new JProperty("Name", name),
-                new JProperty("Start Value", startingValue),
-                new JProperty("End Value", endingValue)
-               );
+            JObject newMetric = BuildJObject(metric);
             try {
                 foreach (JObject m in metrics) {
                     if ((int)m["id"] == id)
@@ -149,14 +139,12 @@ namespace Cain
                     else
                         throw new System.ArgumentOutOfRangeException("Error: That ID was not found");
                 }
-            } catch(System.ArgumentOutOfRangeException e) {
-                Console.WriteLine(e.Message);
-            }
+            } catch(System.ArgumentOutOfRangeException e) { Console.WriteLine(e.Message); }
 
             oldMetric.Replace(newMetric);
-            string newJsonResult = JsonConvert.SerializeObject(this._JSON,
+            string newJson = JsonConvert.SerializeObject(this._JSON,
                    Formatting.Indented);
-            File.WriteAllText(this._path, newJsonResult);
+            File.WriteAllText(this._path, newJson);
             LoadMetrics();
         }
 
@@ -176,9 +164,9 @@ namespace Cain
             }
 
             metrics.Remove(oldMetric);
-            string newJsonResult = JsonConvert.SerializeObject(this._JSON,
+            string newJson = JsonConvert.SerializeObject(this._JSON,
                    Formatting.Indented);
-            File.WriteAllText(this._path, newJsonResult);
+            File.WriteAllText(this._path, newJson);
             LoadMetrics();
         }
     }
