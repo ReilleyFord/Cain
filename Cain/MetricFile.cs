@@ -19,12 +19,10 @@ namespace Cain
             this._path = path;
             this._metrics = new List<Metric>();
 
-            if (File.Exists(path)) {
+            if (File.Exists(path))
                 LoadMetricsFile(path);
-            }
-            else {
+            else
                 CreateMetricsFile(path);
-            }
 
             this._JSON = JObject.Parse(this._file);
             this._id = GetCurrentId();
@@ -74,7 +72,7 @@ namespace Cain
         }
 
         public void CreateMetric(string name, string startingValue, string endingValue) {
-            Metric metric = new Metric(this._id++, name, startingValue, endingValue);
+            Metric metric = new Metric(this._id, name, startingValue, endingValue);
 
             JArray metrics = (JArray)this._JSON["Metrics"];
             JObject jObj = new JObject(
@@ -109,9 +107,15 @@ namespace Cain
         public Metric GetMetric(int id) {
             Metric metric = new Metric();
 
-            foreach(Metric m in this._metrics) {
-                if (m.Id == id)
-                    metric = m;
+            try {
+                foreach (Metric m in this._metrics) {
+                    if (m.Id == id)
+                        metric = m;
+                    else
+                        throw new System.ArgumentOutOfRangeException("Error: That ID was not found");
+                }
+            } catch (System.ArgumentOutOfRangeException e) {
+                Console.WriteLine(e.Message);
             }
 
             return metric;
@@ -127,9 +131,15 @@ namespace Cain
                 new JProperty("Start Value", startingValue),
                 new JProperty("End Value", endingValue)
                );
-            foreach (JObject m in metrics) {
-                if ((int)m["id"] == id)
-                    oldMetric = m;
+            try {
+                foreach (JObject m in metrics) {
+                    if ((int)m["id"] == id)
+                        oldMetric = m;
+                    else
+                        throw new System.ArgumentOutOfRangeException("Error: That ID was not found");
+                }
+            } catch(System.ArgumentOutOfRangeException e) {
+                Console.WriteLine(e.Message);
             }
 
             oldMetric.Replace(newMetric);
@@ -143,9 +153,15 @@ namespace Cain
             JArray metrics = (JArray)this._JSON["Metrics"];
             JObject oldMetric = new JObject();
 
-            foreach (JObject m in metrics) {
-                if ((int)m["id"] == id)
-                    oldMetric = m;
+            try {
+                foreach (JObject m in metrics) {
+                    if ((int)m["id"] == id)
+                        oldMetric = m;
+                    else
+                        throw new System.ArgumentOutOfRangeException("Error: That ID was not found");
+                }
+            } catch (System.ArgumentOutOfRangeException e) {
+                Console.WriteLine(e.Message);
             }
 
             metrics.Remove(oldMetric);
