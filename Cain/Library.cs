@@ -7,23 +7,20 @@ using DocumentFormat.OpenXml.Wordprocessing;
 
 
 namespace Cain {
-    public class CainLibrary {
+    public static class CainLibrary {
 
-        public void ConvertDocxToENTable(string @path) {
+        public static ENTable ConvertDocxToENTable(string @path) {
             ENTable enTable = new ENTable();
 
             using (WordprocessingDocument docx = 
                 WordprocessingDocument.Open(path, false)) {
 
                 MainDocumentPart main = docx.MainDocumentPart;
-                IEnumerable<HeaderPart> headerParts = main.HeaderParts;
+                //IEnumerable<HeaderPart> headerParts = main.HeaderParts;
 
                 //HeaderPart header = headerParts;
 
-                //}
-
                 Table table = main.Document.Body.Elements<Table>().First();
-
                 string date = "";
                 foreach(TableRow row in table.Elements<TableRow>()) {
                     ENTableRow newRow = new ENTableRow();
@@ -47,7 +44,7 @@ namespace Cain {
                 }
             }
 
-            
+            return enTable;
         }
 
         
