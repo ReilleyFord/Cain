@@ -17,7 +17,6 @@ namespace Cain {
 
                 MainDocumentPart main = docx.MainDocumentPart;
                 //IEnumerable<HeaderPart> headerParts = main.HeaderParts;
-
                 //HeaderPart header = headerParts;
 
                 Table table = main.Document.Body.Elements<Table>().First();
