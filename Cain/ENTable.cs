@@ -53,8 +53,7 @@ namespace Cain {
             Regex rgx = new Regex(pattern);
 
             foreach (ENTableRow row in this.Rows) {
-                Console.WriteLine(row.EntryContent);
-                if (rgx.IsMatch(row.EntryContent.Substring(0, 9)))
+                if (rgx.Match(row.EntryContent.Substring(0, 9)).ToString() == propertyNum) 
                     rows.Add(row);
             }
 
