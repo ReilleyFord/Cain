@@ -47,6 +47,20 @@ namespace Cain {
             return end;
         }
 
+        public List<ENTableRow> FilterByProperty(string propertyNum) {
+            List<ENTableRow> rows = new List<ENTableRow>();
+            string pattern = @"^P\d{8}";
+            Regex rgx = new Regex(pattern);
+
+            foreach (ENTableRow row in this.Rows) {
+                Console.WriteLine(row.EntryContent);
+                if (rgx.IsMatch(row.EntryContent.Substring(0, 9)))
+                    rows.Add(row);
+            }
+
+            return rows;
+        }
+
         public List<string> GetDistinctPropertyNumber() {
             List<string> propertyNums = new List<string>();
             string pattern = @"^P\d{8}";
