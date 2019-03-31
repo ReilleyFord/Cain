@@ -22,27 +22,28 @@ namespace Cain {
                 Table table = main.Document.Body.Elements<Table>().First();
                 string date = "";
                 foreach(TableRow row in table.Elements<TableRow>()) {
-                    ENTableRow newRow = new ENTableRow();
-                    string entryNum = row.ElementAt(0).InnerText;
-                    if (entryNum.Trim().Length > 3) {
-                        date = entryNum.Substring(0, 9);
-                        newRow.entryNumber = entryNum.Substring(entryNum.Length - 3);
-                    } else
-                        newRow.entryNumber = entryNum;
+                    if(row.ElementAt(2).InnerText != "") {
+                        ENTableRow newRow = new ENTableRow();
+                        string entryNum = row.ElementAt(0).InnerText;
+                        if (entryNum.Trim().Length > 3) {
+                            date = entryNum.Substring(0, 9);
+                            newRow.EntryNumber = entryNum.Substring(entryNum.Length - 3);
+                        } else
+                            newRow.EntryNumber = entryNum;
 
-                    string timeStamp = row.ElementAt(1).InnerText;
-                    if (timeStamp != "") {
-                        string dateTime = date + " " + timeStamp.Insert(2, ":");
-                        newRow.entryDateTime = Convert.ToDateTime(dateTime.Trim());
-                    } else
-                        newRow.entryDateTime = null;
+                        string timeStamp = row.ElementAt(1).InnerText;
+                        if (timeStamp != "") {
+                            string dateTime = date + " " + timeStamp.Insert(2, ":");
+                            newRow.EntryDateTime = Convert.ToDateTime(dateTime.Trim());
+                        } else
+                            newRow.EntryDateTime = null;
 
-                    newRow.entryContent = row.ElementAt(2).InnerText;
+                        newRow.EntryContent = row.ElementAt(2).InnerText;
 
-                    enTable.Rows.Add(newRow);
+                        enTable.Rows.Add(newRow);
+                    }
                 }
             }
-
             return enTable;
         }
 
