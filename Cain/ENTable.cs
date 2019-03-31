@@ -42,7 +42,7 @@ namespace Cain {
             return start;
         }
 
-        public DateTime GetFinishTime() {
+        public DateTime GetEndTime() {
             DateTime end = (DateTime)this.Rows.Last().EntryDateTime;
             return end;
         }
