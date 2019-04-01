@@ -5,13 +5,21 @@ using System.Text.RegularExpressions;
 using System.Linq;
 
 namespace Cain {
+
+    /**
+     * Custom ENTable class built from docx conversion. ENTable is just a list of ENTableRows
+     **/
     public class ENTable {
         public List<ENTableRow> Rows { get; set; }
 
         public ENTable() {
-            Rows = new List<ENTableRow>();
+            this.Rows = new List<ENTableRow>();
         }
 
+        /**
+         * Converting the ENTable to a DataTable. Currently unused and not need but left in
+         * for possible future use.
+         **/
         public DataTable ConvertToDataTable() {
             DataTable dt = new DataTable();
             dt.Columns.Add("Entry Number", typeof(string));
@@ -27,10 +35,13 @@ namespace Cain {
                 dr[2] = row.EntryContent;
                 dt.Rows.Add(dr);
             }
-
             return dt;
         }
 
+        /**
+         * Parses this.Rows for the first start time of the ENTable
+         * Returns value as a DateTime.
+         **/ 
         public DateTime GetStartTime() {
             DateTime start = new DateTime();
             foreach(ENTableRow first in this.Rows) {
@@ -42,11 +53,18 @@ namespace Cain {
             return start;
         }
 
+        /**
+         * Parses this.Rows for the last EntryDateTime
+         * Returns value as a DateTime
+         **/
         public DateTime GetEndTime() {
             DateTime end = (DateTime)this.Rows.Last().EntryDateTime;
             return end;
         }
 
+        /**
+         * 
+         **/
         public List<ENTableRow> FilterByProperty(string propertyNum) {
             List<ENTableRow> rows = new List<ENTableRow>();
             string pattern = @"^P\d{8}";
