@@ -64,20 +64,23 @@ namespace Cain {
 
         /**
          * FilterByProperty function accepts a property number string
-         * Parses this.Rows and builds a List of ENTableRows that start with the
-         * corresponding property number.
+         * Parses this.Rows and builds a FilteredRow object.
          **/
-        public List<ENTableRow> FilterByProperty(string propertyNum) {
-            List<ENTableRow> rows = new List<ENTableRow>();
+        public FilteredRow FilterByProperty(string propertyNum) {
+            FilteredRow filtered = new FilteredRow();
+            filtered.Rows = new List<ENTableRow>();
             string pattern = @"^P\d{8}";
             Regex rgx = new Regex(pattern);
 
             foreach (ENTableRow row in this.Rows) {
-                if (rgx.Match(row.EntryContent.Substring(0, 9)).ToString() == propertyNum) 
-                    rows.Add(row);
+                string match = rgx.Match(row.EntryContent.Substring(0, 9)).ToString();
+                if (match == propertyNum) {
+                    filtered.PropertyNumber = match;
+                    filtered.Rows.Add(row);
+                }
             }
 
-            return rows;
+            return filtered;
         }
 
         /**

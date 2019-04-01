@@ -44,9 +44,8 @@ namespace Cain {
 
                         //Regex value for grabbing the date stamp and checking if there is a new date.
                         rgx = new Regex(@"(?m)^\d{2}\w{3}\d{4}");
-                        if (rgx.IsMatch(entryNum)) {
+                        if (rgx.IsMatch(entryNum))
                             date = rgx.Match(entryNum).ToString();
-                        }
 
                         //Regex value for grabbing the timestamp.
                         rgx = new Regex(@"^\d{4}");
