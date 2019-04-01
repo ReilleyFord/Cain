@@ -41,10 +41,10 @@ namespace Cain {
         /**
          * Parses this.Rows for the first start time of the ENTable
          * Returns value as a DateTime.
-         **/ 
+         **/
         public DateTime GetStartTime() {
             DateTime start = new DateTime();
-            foreach(ENTableRow first in this.Rows) {
+            foreach (ENTableRow first in this.Rows) {
                 if (first.EntryDateTime != null) {
                     start = (DateTime)first.EntryDateTime;
                     break;
@@ -64,10 +64,10 @@ namespace Cain {
 
         /**
          * FilterByProperty function accepts a property number string
-         * Parses this.Rows and builds a FilteredRow object.
+         * Parses this.Rows and builds a FilteredProperty object.
          **/
-        public FilteredRow FilterByProperty(string propertyNum) {
-            FilteredRow filtered = new FilteredRow();
+        public FilteredProperty FilterByProperty(string propertyNum) {
+            FilteredProperty filtered = new FilteredProperty();
             filtered.Rows = new List<ENTableRow>();
             string pattern = @"^P\d{8}";
             Regex rgx = new Regex(pattern);
@@ -85,17 +85,16 @@ namespace Cain {
 
         /**
          * FilterByProperty overloaded function that accepts a list of property numbers
-         * parses through this.Rows and builds a FilteredRow object for each property
+         * parses through this.Rows and builds a FilteredProperty object for each property
          * number supplied.
-         * Returns a List of FilteredRow objects.
+         * Returns a List of FilteredProperty objects.
          **/
-        public List<FilteredRow> FilterByProperty(List<string> propertyNums) {
-            List<FilteredRow> filteredRows = new List<FilteredRow>();
-
+        public List<FilteredProperty> FilterByProperty(List<string> propertyNums) {
+            List<FilteredProperty> filteredRows = new List<FilteredProperty>();
             string pattern = @"^P\d{8}";
             Regex rgx = new Regex(pattern);
-            foreach(string pNum in propertyNums) {
-                FilteredRow filteredRow = new FilteredRow();
+            foreach (string pNum in propertyNums) {
+                FilteredProperty filteredRow = new FilteredProperty();
                 List<ENTableRow> newRow = new List<ENTableRow>();
                 filteredRow.Rows = newRow;
                 foreach (ENTableRow row in this.Rows) {
@@ -128,7 +127,7 @@ namespace Cain {
             return propertyNums;
         }
 
-    }   
+    }
 
     /**
      * Class for storing each TableRows Entry Number, Entry
@@ -144,7 +143,7 @@ namespace Cain {
      * Class for storing a property number and a list of ENTableRows that are
      * associated with that PropertyNumber
      **/
-    public class FilteredRow
+    public class FilteredProperty
     {
         public string PropertyNumber { get; set; }
         public List<ENTableRow> Rows { get; set; }
