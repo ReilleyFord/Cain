@@ -78,8 +78,6 @@ namespace Cain {
                 }
                 filteredRows.Add(filteredRow);
             }
-
-
             return filteredRows;
         }
 
