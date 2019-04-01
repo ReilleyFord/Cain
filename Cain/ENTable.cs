@@ -60,6 +60,29 @@ namespace Cain {
             return rows;
         }
 
+        public List<FilteredRow> FilterByProperty(List<string> propertyNums) {
+            List<FilteredRow> filteredRows = new List<FilteredRow>();
+
+            string pattern = @"^P\d{8}";
+            Regex rgx = new Regex(pattern);
+            foreach(string pNum in propertyNums) {
+                FilteredRow filteredRow = new FilteredRow();
+                List<ENTableRow> newRow = new List<ENTableRow>();
+                filteredRow.Rows = newRow;
+                foreach (ENTableRow row in this.Rows) {
+                    string match = rgx.Match(row.EntryContent.Substring(0, 9)).ToString();
+                    if (match == pNum) {
+                        filteredRow.PropertyNumber = match;
+                        filteredRow.Rows.Add(row);
+                    }
+                }
+                filteredRows.Add(filteredRow);
+            }
+
+
+            return filteredRows;
+        }
+
         public List<string> GetDistinctPropertyNumber() {
             List<string> propertyNums = new List<string>();
             string pattern = @"^P\d{8}";
@@ -79,5 +102,11 @@ namespace Cain {
         public string EntryNumber { get; set; }
         public Nullable<DateTime> EntryDateTime { get; set; }
         public string EntryContent { get; set; }
+    }
+
+    public class FilteredRow
+    {
+        public string PropertyNumber { get; set; }
+        public List<ENTableRow> Rows { get; set; }
     }
 }

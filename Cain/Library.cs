@@ -21,19 +21,12 @@ namespace Cain {
 
                 Table table = main.Document.Body.Elements<Table>().First();
                 string date = "";
-                int num, time, content;
+                int num = 0, time = 1, content = 2;
 
                 // Definite work in progress, REQUIRES REWORK.
                 foreach (TableRow row in table.Elements<TableRow>()) { 
-                    if(row.Count() == 4) {
-                        num = 1;
-                        time = 2;
-                        content = 3;
-                    } else {
-                        num = 0;
-                        time = 1;
-                        content = 2;
-                    }
+                    if(row.Count() == 4) { num = 1; time = 2; content = 3; }
+
                     if(row.ElementAt(2).InnerText != "") {  
                         ENTableRow newRow = new ENTableRow();
                         Regex rgx = new Regex(@"(?m)\d{3}$");
