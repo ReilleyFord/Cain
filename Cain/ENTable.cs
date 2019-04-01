@@ -63,7 +63,9 @@ namespace Cain {
         }
 
         /**
-         * 
+         * FilterByProperty function accepts a property number string
+         * Parses this.Rows and builds a List of ENTableRows that start with the
+         * corresponding property number.
          **/
         public List<ENTableRow> FilterByProperty(string propertyNum) {
             List<ENTableRow> rows = new List<ENTableRow>();
@@ -78,6 +80,12 @@ namespace Cain {
             return rows;
         }
 
+        /**
+         * FilterByProperty overloaded function that accepts a list of property numbers
+         * parses through this.Rows and builds a FilteredRow object for each property
+         * number supplied.
+         * Returns a List of FilteredRow objects.
+         **/
         public List<FilteredRow> FilterByProperty(List<string> propertyNums) {
             List<FilteredRow> filteredRows = new List<FilteredRow>();
 
@@ -99,6 +107,11 @@ namespace Cain {
             return filteredRows;
         }
 
+        /**
+         * GetDistinctPropertyNumber function that will parse this.Rows
+         * for each distinct property number
+         * Returns a List of property numbers
+         **/
         public List<string> GetDistinctPropertyNumber() {
             List<string> propertyNums = new List<string>();
             string pattern = @"^P\d{8}";
@@ -114,12 +127,20 @@ namespace Cain {
 
     }   
 
+    /**
+     * Class for storing each TableRows Entry Number, Entry
+     * Date Time stamp, and Entry Content.
+     **/
     public class ENTableRow {
         public string EntryNumber { get; set; }
         public Nullable<DateTime> EntryDateTime { get; set; }
         public string EntryContent { get; set; }
     }
 
+    /**
+     * Class for storing a property number and a list of ENTableRows that are
+     * associated with that PropertyNumber
+     **/
     public class FilteredRow
     {
         public string PropertyNumber { get; set; }
