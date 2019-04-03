@@ -98,14 +98,10 @@ namespace Cain {
         public Property FilterByProperty(string propertyNum) {
             Property filtered = new Property();
             filtered.Rows = new List<ENTableRow>();
-            string pattern = @"^P\d{8}";
-            Regex rgx = new Regex(pattern);
 
-            foreach (ENTableRow row in this.Rows) {
-                string match = rgx.Match(row.EntryContent.Substring(0, 9)).ToString();
-                if (match == propertyNum) {
-                    filtered.PropertyNumber = match;
-                    filtered.Rows.Add(row);
+            foreach (Property property in this.Properties) {
+                if (property.PropertyNumber == propertyNum) {
+                    filtered = property;
                 }
             }
             return filtered;
