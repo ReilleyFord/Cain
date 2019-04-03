@@ -13,6 +13,10 @@ namespace Cain {
         public string PropertyNumber { get; set; }
         public List<ENTableRow> Rows { get; set; }
 
+        public Property() {
+            this.Rows = new List<ENTableRow>();
+        }
+
         /**
          * Parses this.Rows for the first start time of the ENTable
          * Returns value as a DateTime.
