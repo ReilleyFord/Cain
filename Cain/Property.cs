@@ -1,0 +1,41 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Cain {
+    /**
+     * Class for storing a property number and a list of ENTableRows that are
+     * associated with that PropertyNumber
+    **/
+    public class Property {
+        public string PropertyNumber { get; set; }
+        public List<ENTableRow> Rows { get; set; }
+
+        /**
+         * Parses this.Rows for the first start time of the ENTable
+         * Returns value as a DateTime.
+        **/
+        public DateTime GetStartTime() {
+            DateTime start = new DateTime();
+            foreach (ENTableRow first in this.Rows) {
+                if (first.EntryDateTime != null) {
+                    start = (DateTime)first.EntryDateTime;
+                    break;
+                }
+            }
+            return start;
+        }
+
+        /**
+         * Parses this.Rows for the last EntryDateTime
+         * Returns value as a DateTime
+        **/
+        public DateTime GetEndTime() {
+            DateTime end = (DateTime)this.Rows.Last().EntryDateTime;
+            return end;
+        }
+
+    }
+}

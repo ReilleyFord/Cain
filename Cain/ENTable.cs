@@ -135,14 +135,4 @@ namespace Cain {
         public Nullable<DateTime> EntryDateTime { get; set; }
         public string EntryContent { get; set; }
     }
-
-    /**
-     * Class for storing a property number and a list of ENTableRows that are
-     * associated with that PropertyNumber
-     **/
-    public class Property
-    {
-        public string PropertyNumber { get; set; }
-        public List<ENTableRow> Rows { get; set; }
-    }
 }
