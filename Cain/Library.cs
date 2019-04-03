@@ -60,6 +60,7 @@ namespace Cain {
                         enTable.Rows.Add(newRow);
                     }
                 }
+                enTable.GetProperties();
             }
             return enTable;
         }

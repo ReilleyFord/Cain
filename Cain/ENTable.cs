@@ -11,10 +11,39 @@ namespace Cain {
      **/
     public class ENTable {
         public List<ENTableRow> Rows { get; set; }
+        public List<Property> Properties { get; set; }
 
         public ENTable() {
             this.Rows = new List<ENTableRow>();
+            this.Properties = new List<Property>();
         }
+
+        /**
+         * GetProperties function is used to built This.Properties for each individual property number
+         * and associated ENTableRows in This.Rows.
+        **/
+        internal void GetProperties() {
+            List<Property> properties = new List<Property>();
+            List<string> propertyNumbers = GetDistinctPropertyNumbers();
+
+            string pattern = @"^P\d{8}";
+            Regex rgx = new Regex(pattern);
+            foreach (string pNum in propertyNumbers) {
+                Property property = new Property();
+                List<ENTableRow> newRow = new List<ENTableRow>();
+                property.Rows = newRow;
+                foreach (ENTableRow row in this.Rows) {
+                    string match = rgx.Match(row.EntryContent.Substring(0, 9)).ToString();
+                    if (match == pNum) {
+                        property.PropertyNumber = match;
+                        property.Rows.Add(row);
+                    }
+                }
+                properties.Add(property);
+            }
+            this.Properties = properties;
+        }
+
 
         /**
          * Converting the ENTable to a DataTable. Currently unused and not need but left in
@@ -66,8 +95,8 @@ namespace Cain {
          * FilterByProperty function accepts a property number string
          * Parses this.Rows and builds a FilteredProperty object.
          **/
-        public FilteredProperty FilterByProperty(string propertyNum) {
-            FilteredProperty filtered = new FilteredProperty();
+        public Property FilterByProperty(string propertyNum) {
+            Property filtered = new Property();
             filtered.Rows = new List<ENTableRow>();
             string pattern = @"^P\d{8}";
             Regex rgx = new Regex(pattern);
@@ -79,34 +108,7 @@ namespace Cain {
                     filtered.Rows.Add(row);
                 }
             }
-
             return filtered;
-        }
-
-        /**
-         * FilterByProperty overloaded function that accepts a list of property numbers
-         * parses through this.Rows and builds a FilteredProperty object for each property
-         * number supplied.
-         * Returns a List of FilteredProperty objects.
-         **/
-        public List<FilteredProperty> FilterByProperty(List<string> propertyNums) {
-            List<FilteredProperty> filteredRows = new List<FilteredProperty>();
-            string pattern = @"^P\d{8}";
-            Regex rgx = new Regex(pattern);
-            foreach (string pNum in propertyNums) {
-                FilteredProperty filteredRow = new FilteredProperty();
-                List<ENTableRow> newRow = new List<ENTableRow>();
-                filteredRow.Rows = newRow;
-                foreach (ENTableRow row in this.Rows) {
-                    string match = rgx.Match(row.EntryContent.Substring(0, 9)).ToString();
-                    if (match == pNum) {
-                        filteredRow.PropertyNumber = match;
-                        filteredRow.Rows.Add(row);
-                    }
-                }
-                filteredRows.Add(filteredRow);
-            }
-            return filteredRows;
         }
 
         /**
@@ -114,7 +116,7 @@ namespace Cain {
          * for each distinct property number
          * Returns a List of property numbers
          **/
-        public List<string> GetDistinctPropertyNumber() {
+        public List<string> GetDistinctPropertyNumbers() {
             List<string> propertyNums = new List<string>();
             string pattern = @"^P\d{8}";
             Regex rgx = new Regex(pattern);
@@ -122,7 +124,6 @@ namespace Cain {
                 if (rgx.IsMatch(row.EntryContent))
                     propertyNums.Add(row.EntryContent.Substring(0, 9));
             }
-
             propertyNums = propertyNums.Distinct().OrderBy(p => p).ToList();
             return propertyNums;
         }
@@ -143,7 +144,7 @@ namespace Cain {
      * Class for storing a property number and a list of ENTableRows that are
      * associated with that PropertyNumber
      **/
-    public class FilteredProperty
+    public class Property
     {
         public string PropertyNumber { get; set; }
         public List<ENTableRow> Rows { get; set; }
