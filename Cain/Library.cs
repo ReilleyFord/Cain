@@ -9,6 +9,27 @@ using System.Text.RegularExpressions;
 namespace Cain {
     public static class CainLibrary {
 
+        public static Case ConvertPathToCase(string @directory) {
+            Case newCase = new Case();
+            List<string> parentDir = Directory.GetDirectories(directory).ToList();
+
+            //List<CaseItem> caseItems = new List<CaseItem>();
+            CaseItem caseItem = GetDirectories(directory);
+
+            return newCase;
+        }
+
+        private static CaseItem GetDirectories(string path) {
+            CaseItem item = new CaseItem();
+            item.RootPath = path;
+            foreach(string dir in Directory.GetDirectories(path)) {
+                item.CaseItems.Add(GetDirectories(dir));
+            }
+            foreach(string file in Directory.GetFiles(path)) {
+                Console.WriteLine("File:" + file);
+            }
+            return item;
+        }
 
         /**
          * ConvertDocxToENTable function. This will take a docx file path (Generally a case notes file)
@@ -60,8 +81,8 @@ namespace Cain {
                         enTable.Rows.Add(newRow);
                     }
                 }
-                enTable.GetProperties();
             }
+            enTable.GetProperties();
             return enTable;
         }
     }

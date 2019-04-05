@@ -10,8 +10,8 @@ namespace Cain {
      * associated with that PropertyNumber
     **/
     public class Property {
-        public string PropertyNumber { get; set; }
-        public List<ENTableRow> Rows { get; set; }
+        public string           PropertyNumber { get; set; }
+        public List<ENTableRow> Rows           { get; set; }
 
         public Property() {
             this.Rows = new List<ENTableRow>();
@@ -24,10 +24,10 @@ namespace Cain {
         public DateTime GetStartTime() {
             DateTime start = new DateTime();
             foreach (ENTableRow first in this.Rows) {
-                if (first.EntryDateTime != null) {
-                    start = (DateTime)first.EntryDateTime;
-                    break;
-                }
+                if (first.EntryDateTime == null) 
+                    continue;
+                start = (DateTime)first.EntryDateTime;
+                break;
             }
             return start;
         }
@@ -37,9 +37,15 @@ namespace Cain {
          * Returns value as a DateTime
         **/
         public DateTime GetEndTime() {
-            DateTime end = (DateTime)this.Rows.Last().EntryDateTime;
+            DateTime end = new DateTime();
+            for (int i = this.Rows.Count; i > 0; i--) {
+                if (Rows[i].EntryDateTime == null) 
+                    continue;
+                end = (DateTime)Rows[i].EntryDateTime;
+                break;
+                
+            }
             return end;
         }
-
     }
 }

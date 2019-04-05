@@ -10,11 +10,11 @@ namespace Cain {
      * Custom ENTable class built from docx conversion. ENTable is just a list of ENTableRows
      **/
     public class ENTable {
-        public List<ENTableRow> Rows { get; set; }
-        public List<Property> Properties { get; set; }
+        public List<ENTableRow> Rows       { get; set; }
+        public List<Property>   Properties { get; set; }
 
         public ENTable() {
-            this.Rows = new List<ENTableRow>();
+            this.Rows       = new List<ENTableRow>();
             this.Properties = new List<Property>();
         }
 
@@ -33,6 +33,8 @@ namespace Cain {
                 List<ENTableRow> newRow = new List<ENTableRow>();
                 property.Rows = newRow;
                 foreach (ENTableRow row in this.Rows) {
+                    if (!rgx.IsMatch(row.EntryContent))
+                        continue;
                     string match = rgx.Match(row.EntryContent.Substring(0, 9)).ToString();
                     if (match == pNum) {
                         property.PropertyNumber = match;
@@ -74,10 +76,10 @@ namespace Cain {
         public DateTime GetStartTime() {
             DateTime start = new DateTime();
             foreach (ENTableRow first in this.Rows) {
-                if (first.EntryDateTime != null) {
-                    start = (DateTime)first.EntryDateTime;
-                    break;
-                }
+                if (first.EntryDateTime == null)
+                    continue;
+                start = (DateTime)first.EntryDateTime;
+                break;
             }
             return start;
         }
@@ -87,7 +89,14 @@ namespace Cain {
          * Returns value as a DateTime
          **/
         public DateTime GetEndTime() {
-            DateTime end = (DateTime)this.Rows.Last().EntryDateTime;
+
+            DateTime end = new DateTime();
+            for(int i = this.Rows.Count -1; i > 0; i--) {
+                if (this.Rows[i].EntryDateTime == null)
+                    continue;
+                end = (DateTime) Rows[i].EntryDateTime;
+                break;
+            }
             return end;
         }
 
@@ -131,8 +140,8 @@ namespace Cain {
      * Date Time stamp, and Entry Content.
      **/
     public class ENTableRow {
-        public string EntryNumber { get; set; }
+        public string             EntryNumber   { get; set; }
         public Nullable<DateTime> EntryDateTime { get; set; }
-        public string EntryContent { get; set; }
+        public string             EntryContent  { get; set; }
     }
 }
