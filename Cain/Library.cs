@@ -66,7 +66,7 @@ namespace Cain {
          * Eventually returns a built ENTable object filled with ENTableRows. 
          **/
         public static CaseNotes ConvertDocxToCaseNotes(string @path) {
-            CaseNotes enTable = new CaseNotes();
+            CaseNotes caseNotes = new CaseNotes();
 
             using (WordprocessingDocument docx = WordprocessingDocument.Open(path, false)) {
                 //Setting up required variables.
@@ -106,12 +106,12 @@ namespace Cain {
                             newRow.EntryDateTime = null;
 
                         newRow.EntryContent = cells.ElementAt(2).InnerText;
-                        enTable.Rows.Add(newRow);
+                        caseNotes.Rows.Add(newRow);
                     }
                 }
             }
-            enTable.GetProperties();
-            return enTable;
+            caseNotes.GetProperties();
+            return caseNotes;
         }
     }
 }
