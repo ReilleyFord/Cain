@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Cain {
     /**
@@ -10,7 +8,7 @@ namespace Cain {
      * associated with that PropertyNumber
     **/
     public class Property {
-        public string           PropertyNumber { get; set; }
+        public string             PropertyNumber { get; set; }
         public List<CaseNotesRow> Rows           { get; set; }
 
         public Property() {

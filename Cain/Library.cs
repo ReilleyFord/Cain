@@ -26,9 +26,6 @@ namespace Cain {
         }
 
         private static List<CaseNotes> GetCaseNotes(CaseDirectory caseDir, Regex rgx, List<CaseNotes> caseNotes) {
-            foreach(CaseDirectory dir in caseDir.CaseDirectories) {
-                GetCaseNotes(dir, rgx, caseNotes);
-            }
             foreach (CaseFile file in caseDir.Files) {
                 if (file.Extension != ".docx")
                     continue;
@@ -37,6 +34,9 @@ namespace Cain {
                 CaseNotes notes = ConvertDocxToCaseNotes(file.RootPath);
                 caseNotes.Add(notes);
                 
+            }
+            foreach (CaseDirectory dir in caseDir.CaseDirectories) {
+                GetCaseNotes(dir, rgx, caseNotes);
             }
             return caseNotes;
         }
