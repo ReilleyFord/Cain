@@ -5,6 +5,7 @@ using System.IO;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Text.RegularExpressions;
+using System.Drawing;
 
 namespace Cain {
     public static class CainLibrary {
@@ -12,24 +13,48 @@ namespace Cain {
         public static Case ConvertPathToCase(string @directory) {
             if (!Directory.Exists(directory))
                 throw new IOException("Error: That directory does not exist");
-            
+
+            Regex rgx = new Regex(@"\w{2}\d{8}");
+
             Case newCase = new Case();
-
+            List<CaseNotes> caseNotes = new List<CaseNotes>();
             newCase.RootPath = directory;
-
-            newCase.CaseItem = GetDirectories(directory);
+            newCase.CaseDirectory = GetDirectories(directory);
+            newCase.CaseNotes = GetCaseNotes(newCase.CaseDirectory, rgx, caseNotes);
 
             return newCase;
         }
 
-        private static CaseItem GetDirectories(string path) {
-            CaseItem item = new CaseItem();
+        private static List<CaseNotes> GetCaseNotes(CaseDirectory caseDir, Regex rgx, List<CaseNotes> caseNotes) {
+            foreach(CaseDirectory dir in caseDir.CaseDirectories) {
+                GetCaseNotes(dir, rgx, caseNotes);
+            }
+            foreach (CaseFile file in caseDir.Files) {
+                if (file.Extension != ".docx")
+                    continue;
+                if (!rgx.IsMatch(file.FileName))
+                    continue;
+                CaseNotes notes = ConvertDocxToCaseNotes(file.RootPath);
+                caseNotes.Add(notes);
+                
+            }
+            return caseNotes;
+        }
+
+        private static CaseDirectory GetDirectories(string path) {
+            CaseDirectory item = new CaseDirectory();
             item.RootPath = path;
             foreach(string dir in Directory.GetDirectories(path)) {
-                item.CaseItems.Add(GetDirectories(dir));
+                item.CaseDirectories.Add(GetDirectories(dir));
             }
+            List<Image> images = new List<Image>();
             foreach(string file in Directory.GetFiles(path)) {
-                Console.WriteLine("File:" + file);
+                string ext = Path.GetExtension(file);
+                if (ext == ".JPG") 
+                        images.Add(Image.FromFile(file));
+                CaseFile caseFile = new CaseFile(file, Path.GetFileNameWithoutExtension(file), ext);
+                item.Files.Add(caseFile);
+
             }
             return item;
         }
@@ -40,7 +65,7 @@ namespace Cain {
          * From there it will parse each row of the table and then grab values from the cells in the TableRow
          * Eventually returns a built ENTable object filled with ENTableRows. 
          **/
-        public static CaseNotes ConvertDocxToENTable(string @path) {
+        public static CaseNotes ConvertDocxToCaseNotes(string @path) {
             CaseNotes enTable = new CaseNotes();
 
             using (WordprocessingDocument docx = WordprocessingDocument.Open(path, false)) {

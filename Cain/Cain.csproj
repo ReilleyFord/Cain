@@ -54,7 +54,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Case.cs" />
-    <Compile Include="CaseItem.cs" />
+    <Compile Include="CaseDirectory.cs" />
+    <Compile Include="CaseFile.cs" />
     <Compile Include="CaseNotes.cs" />
     <Compile Include="Library.cs" />
     <Compile Include="Metric.cs" />
