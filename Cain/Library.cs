@@ -10,11 +10,14 @@ namespace Cain {
     public static class CainLibrary {
 
         public static Case ConvertPathToCase(string @directory) {
+            if (!Directory.Exists(directory))
+                throw new IOException("Error: That directory does not exist");
+            
             Case newCase = new Case();
-            List<string> parentDir = Directory.GetDirectories(directory).ToList();
 
-            //List<CaseItem> caseItems = new List<CaseItem>();
-            CaseItem caseItem = GetDirectories(directory);
+            newCase.RootPath = directory;
+
+            newCase.CaseItem = GetDirectories(directory);
 
             return newCase;
         }
@@ -37,8 +40,8 @@ namespace Cain {
          * From there it will parse each row of the table and then grab values from the cells in the TableRow
          * Eventually returns a built ENTable object filled with ENTableRows. 
          **/
-        public static ENTable ConvertDocxToENTable(string @path) {
-            ENTable enTable = new ENTable();
+        public static CaseNotes ConvertDocxToENTable(string @path) {
+            CaseNotes enTable = new CaseNotes();
 
             using (WordprocessingDocument docx = WordprocessingDocument.Open(path, false)) {
                 //Setting up required variables.
@@ -56,7 +59,7 @@ namespace Cain {
                     IEnumerable<TableCell> cells = row.OfType<TableCell>();
                     //Only grabbing rows that have content.
                     if(cells.ElementAt(2).InnerText != "") {
-                        ENTableRow newRow = new ENTableRow();
+                        CaseNotesRow newRow = new CaseNotesRow();
                         //Regex value for grabbing the entry number
                         Regex rgx = new Regex(@"(?m)\d{3}$");
 

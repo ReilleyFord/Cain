@@ -11,10 +11,10 @@ namespace Cain {
     **/
     public class Property {
         public string           PropertyNumber { get; set; }
-        public List<ENTableRow> Rows           { get; set; }
+        public List<CaseNotesRow> Rows           { get; set; }
 
         public Property() {
-            this.Rows = new List<ENTableRow>();
+            this.Rows = new List<CaseNotesRow>();
         }
 
         /**
@@ -23,7 +23,7 @@ namespace Cain {
         **/
         public DateTime GetStartTime() {
             DateTime start = new DateTime();
-            foreach (ENTableRow first in this.Rows) {
+            foreach (CaseNotesRow first in this.Rows) {
                 if (first.EntryDateTime == null) 
                     continue;
                 start = (DateTime)first.EntryDateTime;
