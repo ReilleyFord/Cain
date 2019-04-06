@@ -33,8 +33,8 @@ namespace Cain {
                     continue;
                 CaseNotes notes = ConvertDocxToCaseNotes(file.RootPath);
                 caseNotes.Add(notes);
-                
             }
+
             foreach (CaseDirectory dir in caseDir.CaseDirectories) {
                 GetCaseNotes(dir, rgx, caseNotes);
             }
@@ -74,7 +74,7 @@ namespace Cain {
                 Table table = main.Document.Body.Elements<Table>().First();
                 string date = String.Empty;
 
-                //Header parsing not required. However I might refactor later.
+                //Header parsing not required. However I might rework later.
                 //IEnumerable<HeaderPart> headerParts = main.HeaderParts;
                 //HeaderPart header = headerParts;
 

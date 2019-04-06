@@ -11,7 +11,7 @@ namespace Cain {
      **/
     public class CaseNotes {
         public List<CaseNotesRow> Rows       { get; set; }
-        public List<Property>   Properties { get; set; }
+        public List<Property>     Properties { get; set; }
 
         public CaseNotes() {
             this.Rows       = new List<CaseNotesRow>();
@@ -133,15 +133,5 @@ namespace Cain {
             return propertyNums;
         }
 
-    }
-
-    /**
-     * Class for storing each TableRows Entry Number, Entry
-     * Date Time stamp, and Entry Content.
-     **/
-    public class CaseNotesRow {
-        public string             EntryNumber   { get; set; }
-        public Nullable<DateTime> EntryDateTime { get; set; }
-        public string             EntryContent  { get; set; }
     }
 }

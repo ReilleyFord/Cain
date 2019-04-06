@@ -4,10 +4,10 @@ namespace Cain
 {
     public class Metric
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public int    Id            { get; set; }
+        public string Name          { get; set; }
         public string StartingValue { get; set; }
-        public string EndingValue { get; set; }
+        public string EndingValue   { get; set; }
 
         public Metric() {
 
