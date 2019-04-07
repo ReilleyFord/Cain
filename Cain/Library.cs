@@ -53,7 +53,7 @@ namespace Cain {
             foreach (string file in Directory.GetFiles(path)) {
                 CaseFile caseFile = new CaseFile();
                 string ext = Path.GetExtension(file);
-                if (ext == ".JPG")
+                if (ext.ToLower() == ".jpg" || ext.ToLower() == ".png")
                     images.Add(Image.FromFile(file));
                 if (ext == ".docx") {
                     Regex rgx = new Regex(@"\w{2}\d{8}");
