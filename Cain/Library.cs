@@ -53,8 +53,9 @@ namespace Cain {
             foreach (string file in Directory.GetFiles(path)) {
                 CaseFile caseFile = new CaseFile();
                 string ext = Path.GetExtension(file);
-                if (ext.ToLower() == ".jpg" || ext.ToLower() == ".png")
+                if (ext.ToLower() == ".jpg" || ext.ToLower() == ".png") {
                     images.Add(Image.FromFile(file));
+                }
                 if (ext == ".docx") {
                     Regex rgx = new Regex(@"\w{2}\d{8}");
                     if (rgx.IsMatch(Path.GetFileName(file))) 
@@ -63,6 +64,7 @@ namespace Cain {
                 caseFile.RootPath  = file;
                 caseFile.FileName  = Path.GetFileNameWithoutExtension(file);
                 caseFile.Extension = ext;
+                item.Images = images;
                 item.CaseFiles.Add(caseFile);
             }
             return item;
