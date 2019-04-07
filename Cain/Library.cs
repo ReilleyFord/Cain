@@ -18,15 +18,16 @@ namespace Cain {
 
             Case newCase = new Case();
             List<CaseNotes> caseNotes = new List<CaseNotes>();
+            newCase.CaseNumber = rgx.Match(directory).ToString();
             newCase.RootPath = directory;
-            newCase.CaseDirectory = GetDirectories(directory);
-            newCase.CaseNotes = GetCaseNotes(newCase.CaseDirectory, rgx, caseNotes);
+            newCase.RootCaseDirectory = GetDirectories(directory);
+            newCase.CaseNotes = GetCaseNotes(newCase.RootCaseDirectory, rgx, caseNotes);
 
             return newCase;
         }
 
         private static List<CaseNotes> GetCaseNotes(CaseDirectory caseDir, Regex rgx, List<CaseNotes> caseNotes) {
-            foreach (CaseFile file in caseDir.Files) {
+            foreach (CaseFile file in caseDir.CaseFiles) {
                 if (file.Extension != ".docx")
                     continue;
                 if (!rgx.IsMatch(file.FileName))
@@ -53,7 +54,7 @@ namespace Cain {
                 if (ext == ".JPG") 
                         images.Add(Image.FromFile(file));
                 CaseFile caseFile = new CaseFile(file, Path.GetFileNameWithoutExtension(file), ext);
-                item.Files.Add(caseFile);
+                item.CaseFiles.Add(caseFile);
 
             }
             return item;
