@@ -50,13 +50,20 @@ namespace Cain {
                 item.CaseDirectories.Add(GetDirectories(dir));
             }
             List<Image> images = new List<Image>();
-            foreach(string file in Directory.GetFiles(path)) {
+            foreach (string file in Directory.GetFiles(path)) {
+                CaseFile caseFile = new CaseFile();
                 string ext = Path.GetExtension(file);
-                if (ext == ".JPG") 
-                        images.Add(Image.FromFile(file));
-                CaseFile caseFile = new CaseFile(file, Path.GetFileNameWithoutExtension(file), ext);
+                if (ext == ".JPG")
+                    images.Add(Image.FromFile(file));
+                if (ext == ".docx") {
+                    Regex rgx = new Regex(@"\w{2}\d{8}");
+                    if (rgx.IsMatch(Path.GetFileName(file))) 
+                        caseFile.CaseNotes = ConvertDocxToCaseNotes(file);
+                }
+                caseFile.RootPath  = file;
+                caseFile.FileName  = Path.GetFileNameWithoutExtension(file);
+                caseFile.Extension = ext;
                 item.CaseFiles.Add(caseFile);
-
             }
             return item;
         }

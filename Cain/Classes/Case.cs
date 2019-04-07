@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace Cain {
     public class Case {
-        public string          CaseNumber         { get; set; }
-        public string          RootPath           { get; set; }
-        public List<CaseNotes> CaseNotes          { get; set; }
-        public CaseDirectory   RootCaseDirectory  { get; set; }
+        public string          CaseNumber        { get; set; }
+        public string          RootPath          { get; set; }
+        public List<CaseNotes> CaseNotes         { get; set; }
+        public CaseDirectory   RootCaseDirectory { get; set; }
 
         public Case() {
             CaseNotes = new List<CaseNotes>();

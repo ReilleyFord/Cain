@@ -6,6 +6,7 @@ namespace Cain {
     public class CaseDirectory {
         public string              RootPath        { get; set; }
         public string              DirectoryName   { get; set; }
+        public List<CaseNotes>     CaseNotes       { get; set; }
         public List<CaseFile>      CaseFiles       { get; set; }
         public List<CaseDirectory> CaseDirectories { get; set; }
         public List<Image>         Images          { get; set; }
