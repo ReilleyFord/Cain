@@ -45,6 +45,7 @@ namespace Cain {
         private static CaseDirectory GetDirectories(string path) {
             CaseDirectory item = new CaseDirectory();
             item.RootPath = path;
+            item.DirectoryName = new DirectoryInfo(path).Name;
             foreach(string dir in Directory.GetDirectories(path)) {
                 item.CaseDirectories.Add(GetDirectories(dir));
             }
