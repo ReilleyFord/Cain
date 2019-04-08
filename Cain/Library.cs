@@ -20,6 +20,7 @@ namespace Cain {
             Case newCase = new Case();
             List<CaseNotes> caseNotes = new List<CaseNotes>();
             newCase.CaseNumber = rgx.Match(directory).ToString();
+            newCase.CaseName = new DirectoryInfo(directory).Name;
             newCase.RootPath = directory;
             newCase.RootCaseDirectory = GetDirectories(directory);
             //newCase.CaseNotes = GetCaseNotes(newCase.RootCaseDirectory, rgx, caseNotes);

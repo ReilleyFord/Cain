@@ -109,9 +109,8 @@ namespace Cain {
             filtered.Rows = new List<CaseNotesRow>();
 
             foreach (Property property in this.Properties) {
-                if (property.PropertyNumber == propertyNum) {
+                if (property.PropertyNumber == propertyNum)
                     filtered = property;
-                }
             }
             return filtered;
         }

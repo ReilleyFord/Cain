@@ -9,7 +9,7 @@ namespace Cain {
         public List<CaseNotes>     CaseNotes       { get; set; }
         public List<CaseFile>      CaseFiles       { get; set; }
         public List<CaseDirectory> CaseDirectories { get; set; }
-        public List<Bitmap>         Images          { get; set; }
+        public List<Bitmap>        Images          { get; set; }
 
         public CaseDirectory() {
             CaseFiles       = new List<CaseFile>();
