@@ -9,15 +9,15 @@ namespace Cain {
         public List<CaseNotes>     CaseNotes       { get; set; }
         public List<CaseFile>      CaseFiles       { get; set; }
         public List<CaseDirectory> CaseDirectories { get; set; }
-        public List<Image>         Images          { get; set; }
+        public List<Bitmap>         Images          { get; set; }
 
         public CaseDirectory() {
             CaseFiles       = new List<CaseFile>();
             CaseDirectories = new List<CaseDirectory>();
-            Images          = new List<Image>();
+            Images          = new List<Bitmap>();
         }
 
-        public CaseDirectory(string path, List<CaseFile> files, List<CaseDirectory> items, List<Image> images) {
+        public CaseDirectory(string path, List<CaseFile> files, List<CaseDirectory> items, List<Bitmap> images) {
             this.RootPath        = path;
             this.CaseFiles       = files;
             this.CaseDirectories = items;

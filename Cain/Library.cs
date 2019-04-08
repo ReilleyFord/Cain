@@ -5,6 +5,7 @@ using System.IO;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Text.RegularExpressions;
+using System.Windows.Media.Imaging;
 using System.Drawing;
 
 namespace Cain {
@@ -21,7 +22,7 @@ namespace Cain {
             newCase.CaseNumber = rgx.Match(directory).ToString();
             newCase.RootPath = directory;
             newCase.RootCaseDirectory = GetDirectories(directory);
-            newCase.CaseNotes = GetCaseNotes(newCase.RootCaseDirectory, rgx, caseNotes);
+            //newCase.CaseNotes = GetCaseNotes(newCase.RootCaseDirectory, rgx, caseNotes);
 
             return newCase;
         }
@@ -49,13 +50,12 @@ namespace Cain {
             foreach(string dir in Directory.GetDirectories(path)) {
                 item.CaseDirectories.Add(GetDirectories(dir));
             }
-            List<Image> images = new List<Image>();
+            List<Bitmap> images = new List<Bitmap>();
             foreach (string file in Directory.GetFiles(path)) {
                 CaseFile caseFile = new CaseFile();
                 string ext = Path.GetExtension(file);
-                if (ext.ToLower() == ".jpg" || ext.ToLower() == ".png") {
-                    images.Add(Image.FromFile(file));
-                }
+                if (ext.ToLower() == ".jpg" || ext.ToLower() == ".png") 
+                    images.Add((Bitmap) Image.FromFile(file));
                 if (ext == ".docx") {
                     Regex rgx = new Regex(@"\w{2}\d{8}");
                     if (rgx.IsMatch(Path.GetFileName(file))) 
