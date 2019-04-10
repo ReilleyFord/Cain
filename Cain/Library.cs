@@ -58,6 +58,7 @@ namespace Cain {
                     BitmapImage bitmap = new BitmapImage();
                     bitmap.BeginInit();
                     bitmap.UriSource = new Uri(file);
+                    bitmap.EndInit();
                     images.Add(bitmap);
                 }
                 if (ext == ".docx") {
