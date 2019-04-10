@@ -6,7 +6,6 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Text.RegularExpressions;
 using System.Windows.Media.Imaging;
-using System.Drawing;
 
 namespace Cain {
     public static class CainLibrary {
@@ -51,12 +50,16 @@ namespace Cain {
             foreach(string dir in Directory.GetDirectories(path)) {
                 item.CaseDirectories.Add(GetDirectories(dir));
             }
-            List<Bitmap> images = new List<Bitmap>();
+            List<BitmapImage> images = new List<BitmapImage>();
             foreach (string file in Directory.GetFiles(path)) {
                 CaseFile caseFile = new CaseFile();
                 string ext = Path.GetExtension(file);
-                if (ext.ToLower() == ".jpg" || ext.ToLower() == ".png") 
-                    images.Add((Bitmap) Image.FromFile(file));
+                if (ext.ToLower() == ".jpg" || ext.ToLower() == ".png") {
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri(file);
+                    images.Add(bitmap);
+                }
                 if (ext == ".docx") {
                     Regex rgx = new Regex(@"\w{2}\d{8}");
                     if (rgx.IsMatch(Path.GetFileName(file))) 
