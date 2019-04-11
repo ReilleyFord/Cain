@@ -61,6 +61,11 @@ namespace Cain
             this.Id = GetCurrentId();
         }
 
+        public List<Metric> GetMetrics() {
+            LoadMetrics();
+            return this.Metrics;
+        }
+
         private JObject BuildJObject(Metric metric) {
             JObject jObj = new JObject(
                 new JProperty("id", this.Id),
