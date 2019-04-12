@@ -1,0 +1,12 @@
+C:\Users\fordr\source\repos\Cain\Cain\DLL\Cain.dll
+C:\Users\fordr\source\repos\Cain\Cain\DLL\Cain.pdb
+C:\Users\fordr\source\repos\Cain\Cain\DLL\DocumentFormat.OpenXml.dll
+C:\Users\fordr\source\repos\Cain\Cain\DLL\Newtonsoft.Json.dll
+C:\Users\fordr\source\repos\Cain\Cain\DLL\DocumentFormat.OpenXml.xml
+C:\Users\fordr\source\repos\Cain\Cain\DLL\Newtonsoft.Json.pdb
+C:\Users\fordr\source\repos\Cain\Cain\DLL\Newtonsoft.Json.xml
+C:\Users\fordr\source\repos\Cain\Cain\obj\Debug\Cain.csprojAssemblyReference.cache
+C:\Users\fordr\source\repos\Cain\Cain\obj\Debug\Cain.csproj.CoreCompileInputs.cache
+C:\Users\fordr\source\repos\Cain\Cain\obj\Debug\Cain.csproj.CopyComplete
+C:\Users\fordr\source\repos\Cain\Cain\obj\Debug\Cain.dll
+C:\Users\fordr\source\repos\Cain\Cain\obj\Debug\Cain.pdb
