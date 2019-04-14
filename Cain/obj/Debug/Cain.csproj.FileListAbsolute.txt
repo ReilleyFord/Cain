@@ -10,3 +10,14 @@ C:\Users\fordr\source\repos\Cain\Cain\obj\Debug\Cain.csproj.CoreCompileInputs.ca
 C:\Users\fordr\source\repos\Cain\Cain\obj\Debug\Cain.csproj.CopyComplete
 C:\Users\fordr\source\repos\Cain\Cain\obj\Debug\Cain.dll
 C:\Users\fordr\source\repos\Cain\Cain\obj\Debug\Cain.pdb
+C:\Users\Reilley\Desktop\Work Development\Cain\Cain\DLL\Cain.dll
+C:\Users\Reilley\Desktop\Work Development\Cain\Cain\DLL\Cain.pdb
+C:\Users\Reilley\Desktop\Work Development\Cain\Cain\DLL\DocumentFormat.OpenXml.dll
+C:\Users\Reilley\Desktop\Work Development\Cain\Cain\DLL\Newtonsoft.Json.dll
+C:\Users\Reilley\Desktop\Work Development\Cain\Cain\DLL\DocumentFormat.OpenXml.xml
+C:\Users\Reilley\Desktop\Work Development\Cain\Cain\DLL\Newtonsoft.Json.pdb
+C:\Users\Reilley\Desktop\Work Development\Cain\Cain\DLL\Newtonsoft.Json.xml
+C:\Users\Reilley\Desktop\Work Development\Cain\Cain\obj\Debug\Cain.csproj.CoreCompileInputs.cache
+C:\Users\Reilley\Desktop\Work Development\Cain\Cain\obj\Debug\Cain.csproj.CopyComplete
+C:\Users\Reilley\Desktop\Work Development\Cain\Cain\obj\Debug\Cain.dll
+C:\Users\Reilley\Desktop\Work Development\Cain\Cain\obj\Debug\Cain.pdb

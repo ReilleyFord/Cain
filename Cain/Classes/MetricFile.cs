@@ -16,6 +16,8 @@ namespace Cain
         private string       File    { get; set; }
         private JObject      JSON    { get; set; }
 
+        public MetricFile() { }
+
         public MetricFile(string path) {
             this.Path    = path;
             this.Metrics = new List<Metric>();
@@ -47,6 +49,8 @@ namespace Cain
         }
 
         private void LoadMetrics() {
+            if(this.JSON == null)
+                return;
             List<Metric> metrics = new List<Metric>();
             foreach(JToken metric in this.JSON.GetValue("Metrics")) {
                 Metric newMetric = new Metric();
@@ -66,7 +70,7 @@ namespace Cain
 
         private JObject BuildJObject(Metric metric) {
             JObject jObj = new JObject(
-                new JProperty("id", this.Id),
+                new JProperty("id", metric.Id),
                 new JProperty("Name", metric.Name),
                 new JProperty("Start Value", metric.StartingValue),
                 new JProperty("End Value", metric.EndingValue),
@@ -82,14 +86,20 @@ namespace Cain
 
         public void SetId() {
             LoadMetrics();
-            if (this.Metrics.Count == 0)
+            if (this.Metrics.Count == 0) {
+                this.Id = 1;
                 return;
+            }
             int id = this.Metrics.Last().Id;
             this.Id = id + 1;
         }
 
-        public void CreateMetric(string name, string startingValue, string endingValue, MetricType type) {
+        internal int GetCurrentId() {
             SetId();
+            return this.Id;
+        }
+
+        public void CreateMetric(string name, string startingValue, string endingValue, MetricType type) {
             Metric metric = new Metric(name, startingValue, endingValue, type);
 
             JArray metrics = (JArray)this.JSON["Metrics"];
@@ -102,7 +112,6 @@ namespace Cain
         }
 
         public void CreateMetric(Metric metric) {
-            SetId();
             JArray metrics = (JArray)this.JSON["Metrics"];
             JObject newMetric = BuildJObject(metric);
             metrics.Add(newMetric);
@@ -114,43 +123,43 @@ namespace Cain
         }
 
         public Metric GetMetric(int id) {
-            throw new NotImplementedException();
-            //return metric;
+            LoadMetrics();
+            Metric metric = new Metric();
+            foreach(Metric m in this.Metrics.Where(obj => obj.Id == id)) {
+                metric = m;
+            }
+            return metric;
         }
 
         public void UpdateMetric(int id, string name, string startingValue, string endingValue, MetricType type) {
-            JArray metrics = (JArray)this.JSON["Metrics"];
-            JObject oldMetric = new JObject();
             Metric metric = new Metric(name, startingValue, endingValue, type);
-
+            JArray metrics = (JArray)this.JSON["Metrics"];
             JObject newMetric = BuildJObject(metric);
-            try {
-                foreach (JObject m in metrics) {
-                    if ((int)m["id"] == id)
-                        oldMetric = m;
-                    else
-                        throw new ArgumentOutOfRangeException("Error: That ID was not found");
-                }
-            } catch(ArgumentOutOfRangeException e) { Console.WriteLine(e.Message); }
+            JObject oldMetric = new JObject();
+
+            foreach (JObject m in metrics.Where(obj => obj["id"].Value<int>() == metric.Id)) {
+                oldMetric = m;
+            }
 
             oldMetric.Replace(newMetric);
+            this.JSON["Metrics"] = metrics;
             string newJson = JsonConvert.SerializeObject(this.JSON,
-                   Formatting.Indented);
+                    Formatting.Indented);
             System.IO.File.WriteAllText(this.Path, newJson);
             LoadMetrics();
         }
 
         public void UpdateMetric(Metric metric) {
-            JArray metrics = new JArray(this.Metrics);
+            JArray metrics = (JArray)this.JSON["Metrics"];
+            JObject newMetric = BuildJObject(metric);
             JObject oldMetric = new JObject();
 
-            JObject newMetric = BuildJObject(metric);
-            foreach (JObject m in metrics) {
-                if ((int)m["id"] == metric.Id)
-                    oldMetric = m;
+            foreach (JObject m in metrics.Where(obj => obj["id"].Value<int>() == metric.Id)) {
+                oldMetric = m;
             }
 
             oldMetric.Replace(newMetric);
+            this.JSON["Metrics"] = metrics;
             string newJson = JsonConvert.SerializeObject(this.JSON,
                    Formatting.Indented);
             System.IO.File.WriteAllText(this.Path, newJson);
@@ -158,19 +167,15 @@ namespace Cain
         }
 
         public void DeleteMetric(int id) {
-            JArray metrics = new JArray(this.Metrics); //) metrics.ToObject<List<Metric>>();
+            JArray metrics = (JArray)this.JSON["Metrics"];
             JObject oldMetric = new JObject();
 
-            try {
-                foreach (JObject m in metrics) {
-                    if ((int)m["id"] == id)
-                        oldMetric = m;
-                    else
-                        throw new ArgumentOutOfRangeException("Error: That ID was not found");
-                }
-            } catch (ArgumentOutOfRangeException e) { Console.WriteLine(e.Message); }
+            foreach (JObject m in metrics.Where(obj => obj["id"].Value<int>() == id)) {
+                oldMetric = m;
+            }
 
             metrics.Remove(oldMetric);
+            this.JSON["Metrics"] = metrics;
             string newJson = JsonConvert.SerializeObject(this.JSON,
                    Formatting.Indented);
             System.IO.File.WriteAllText(this.Path, newJson);
@@ -178,19 +183,15 @@ namespace Cain
         }
 
         public void DeleteMetric(Metric metric) {
-            JArray metrics = new JArray(this.Metrics); //) metrics.ToObject<List<Metric>>();
+            JArray metrics = (JArray)this.JSON["Metrics"];
             JObject oldMetric = new JObject();
 
-            try {
-                foreach (JObject m in metrics) {
-                    if ((int)m["id"] == metric.Id)
-                        oldMetric = m;
-                    else
-                        throw new ArgumentOutOfRangeException("Error: That ID was not found");
-                }
-            } catch (ArgumentOutOfRangeException e) { Console.WriteLine(e.Message); }
+            foreach (JObject m in metrics.Where(obj => obj["id"].Value<int>() == metric.Id)) {
+                oldMetric = m;
+            }
 
             metrics.Remove(oldMetric);
+            this.JSON["Metrics"] = metrics;
             string newJson = JsonConvert.SerializeObject(this.JSON,
                    Formatting.Indented);
             System.IO.File.WriteAllText(this.Path, newJson);

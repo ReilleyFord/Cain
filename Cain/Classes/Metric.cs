@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Threading;
 
-namespace Cain
-{
+namespace Cain {
     public enum MetricType { Case, Property }
 
-    public class Metric
-    {
-        public int        Id            { get; set; }
+    public class Metric : MetricFile {
+        private int       Id            { get; set; }
         public string     Name          { get; set; }
         public string     StartingValue { get; set; }
         public string     EndingValue   { get; set; }
@@ -16,6 +14,7 @@ namespace Cain
         public Metric() { }
 
         public Metric(string name, string start, string end, MetricType type) {
+            this.Id            = GetCurrentId();
             this.Name          = name;
             this.StartingValue = start;
             this.EndingValue   = end;
