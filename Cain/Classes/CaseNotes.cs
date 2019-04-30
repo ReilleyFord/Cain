@@ -132,5 +132,21 @@ namespace Cain {
             return propertyNums;
         }
 
+        public List<CalculatedMetric> CalculateMetrics(Metric metric) {
+            List<CalculatedMetric> metrics = new List<CalculatedMetric>();
+
+            foreach(CaseNotesRow row in this.Rows) {
+                CalculatedMetric cMetric = new CalculatedMetric();
+                if (row.EntryContent.Contains(metric.StartingValue)) 
+                    cMetric.StartValue = row.EntryDateTime.Value;
+                if (row.EntryContent.Contains(metric.EndingValue))
+                    cMetric.EndValue = row.EntryDateTime.Value;
+
+                metrics.Add(cMetric);
+            }
+
+            return metrics;
+        }
+
     }
 }
