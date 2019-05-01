@@ -12,7 +12,7 @@ namespace Cain {
 
         public CalculatedMetric() { }
 
-        public CalculatedMetric(string start, string end, int value) {
+        public CalculatedMetric(DateTime start, DateTime end, int value) {
             this.StartValue      = start;
             this.EndValue        = end;
             this.CalculatedValue = value;

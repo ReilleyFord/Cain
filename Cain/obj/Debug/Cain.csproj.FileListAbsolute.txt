@@ -21,3 +21,4 @@ C:\Users\Reilley\Desktop\Work Development\Cain\Cain\obj\Debug\Cain.csproj.CoreCo
 C:\Users\Reilley\Desktop\Work Development\Cain\Cain\obj\Debug\Cain.csproj.CopyComplete
 C:\Users\Reilley\Desktop\Work Development\Cain\Cain\obj\Debug\Cain.dll
 C:\Users\Reilley\Desktop\Work Development\Cain\Cain\obj\Debug\Cain.pdb
+C:\Users\Reilley\Desktop\Work Development\Cain\Cain\obj\Debug\Cain.csprojAssemblyReference.cache
