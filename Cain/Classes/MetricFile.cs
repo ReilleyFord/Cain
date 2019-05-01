@@ -197,5 +197,24 @@ namespace Cain
             System.IO.File.WriteAllText(this.Path, newJson);
             LoadMetrics();
         }
+
+        public List<CalculatedMetric> CalculateMetric(List<CaseNotesRow> rows, MetricType type) {
+            List<CalculatedMetric> metrics = new List<CalculatedMetric>();
+
+            foreach(Metric metric in this.Metrics) {
+                CalculatedMetric cMetric = new CalculatedMetric();
+                foreach (CaseNotesRow row in rows) {
+                    if (row.EntryContent.Contains(metric.StartingValue) && metric.Type == type)
+                        cMetric.StartValue = row.EntryDateTime.Value;
+
+                    if (row.EntryContent.Contains(metric.EndingValue) && metric.Type == type)
+                        cMetric.EndValue = row.EntryDateTime.Value;
+
+                    metrics.Add(cMetric);
+                }
+            }
+
+            return metrics;
+        }
     }
 }
