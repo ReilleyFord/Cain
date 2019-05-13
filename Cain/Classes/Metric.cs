@@ -4,7 +4,7 @@ using System.Threading;
 namespace Cain {
     public enum MetricType { Case, Property }
 
-    public class Metric : MetricFile {
+    public class Metric {
         private int       Id            { get; set; }
         public string     Name          { get; set; }
         public string     StartingValue { get; set; }
